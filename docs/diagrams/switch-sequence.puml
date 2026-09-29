@@ -1,0 +1,60 @@
+@startuml switch-sequence
+!include _style.puml
+
+actor Developer
+boundary "pages::tasks.start" as StartPage
+participant TaskPolicy
+control SwitchTask
+control PauseTask
+control ResumeTask
+control StartTask
+control OpenWorkSession
+database "SQLite" as Db
+
+Developer -> StartPage : submit()
+StartPage -> TaskPolicy : authorize('update', task)
+TaskPolicy --> StartPage : allowed
+StartPage -> StartPage : activeTask is not null,\nvalidate where_stopped and next_step
+StartPage -> SwitchTask : handle(task, where_stopped, next_step)
+activate SwitchTask
+SwitchTask -> Db : begin transaction
+SwitchTask -> Db : read status of the target task
+SwitchTask -> Db : read active task of the developer
+
+SwitchTask -> PauseTask : handle(active, where_stopped, next_step)
+activate PauseTask
+PauseTask -> Db : lock and read the active task
+PauseTask -> Db : set ended_at of the open work session
+PauseTask -> Db : set status = paused
+PauseTask -> Db : insert resume point
+PauseTask --> SwitchTask : ResumePoint
+deactivate PauseTask
+
+alt target status is paused
+  SwitchTask -> ResumeTask : handle(target)
+  ResumeTask -> OpenWorkSession : handle(target, Paused, 'resumed')
+else target status is todo
+  SwitchTask -> StartTask : handle(target)
+  StartTask -> OpenWorkSession : handle(target, Todo, 'started')
+end
+
+activate OpenWorkSession
+OpenWorkSession -> Db : lock and read the target task
+OpenWorkSession -> Db : check project not archived,\nno open work session of the developer
+OpenWorkSession -> Db : set status = active
+OpenWorkSession -> Db : insert work session
+OpenWorkSession --> SwitchTask : WorkSession
+deactivate OpenWorkSession
+
+SwitchTask -> Db : commit
+SwitchTask --> StartPage : resume point and session
+deactivate SwitchTask
+StartPage -> Developer : redirect to dashboard
+
+note over SwitchTask, Db
+  Any exception after the begin rolls the pause back as well.
+  The page then shows the message of the exception
+  and nothing has changed.
+end note
+
+@enduml

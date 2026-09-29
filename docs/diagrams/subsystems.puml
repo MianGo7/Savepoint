@@ -1,0 +1,42 @@
+@startuml subsystems
+!include _style.puml
+
+package "Boundary" {
+  component "Pages\nresources/views/pages" as Pages
+  component "Routes\nroutes/web.php" as Routes
+}
+
+package "Control" {
+  component "Actions\napp/Actions" as Actions
+  component "Queries\napp/Queries" as Queries
+  component "Policies\napp/Policies" as Policies
+  component "Exceptions\napp/Exceptions" as Exceptions
+}
+
+package "Entity" {
+  component "Models\napp/Models" as Models
+  component "Enums\napp/Enums" as Enums
+}
+
+package "Framework" {
+  component "Livewire and Flux" as Livewire
+  component "Eloquent and SQLite" as Eloquent
+  component "Fortify\nauthentication" as Fortify
+}
+
+Routes ..> Pages
+Routes ..> Fortify : auth middleware
+Pages ..> Actions
+Pages ..> Queries
+Pages ..> Policies
+Pages ..> Exceptions
+Pages ..> Livewire
+Actions ..> Models
+Actions ..> Exceptions
+Queries ..> Models
+Policies ..> Models
+Models ..> Enums
+Models ..> Eloquent
+Fortify ..> Models
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml deployment
+!include _style.puml
+
+node "Developer machine (macOS)" as Machine {
+  node "Web browser" as Browser {
+    artifact "Livewire and Flux\nscripts and styles" as Assets
+  }
+
+  node "PHP 8.3 runtime" as Php {
+    artifact "Savepoint\nLaravel and Livewire" as App
+  }
+
+  database "database/database.sqlite" as Db
+}
+
+Browser --> Php : HTTP, localhost:8000
+App --> Db : SQLite file access
+
+@enduml

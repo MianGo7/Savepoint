@@ -1,0 +1,37 @@
+@startuml global-control
+!include _style.puml
+
+actor Developer
+participant Browser
+participant "Route and middleware\n(auth, verified)" as Route
+boundary "Livewire page" as Page
+participant Policy
+control Action
+database "SQLite" as Db
+
+Developer -> Browser : opens a page
+Browser -> Route : GET address
+Route -> Route : requires an authenticated,\nverified session
+Route -> Page : mount(parameters)
+Page -> Policy : authorize('update' or 'view', model)
+Policy --> Page : allowed, or 403
+Page --> Browser : rendered page
+
+Developer -> Browser : submits a form or presses a button
+Browser -> Page : Livewire request with the method name
+Page -> Policy : authorize(ability, model)
+Page -> Page : validate(input)
+Page -> Action : handle(model, validated input)
+activate Action
+Action -> Db : DB::transaction
+Action --> Page : result
+deactivate Action
+
+alt a rule is violated
+  Action --> Page : dedicated exception
+  Page -> Page : addError('form') or Flux::toast(danger)
+end
+
+Page --> Browser : updated page, toast or redirect
+
+@enduml
