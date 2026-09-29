@@ -63,3 +63,32 @@ the checks belong in the definition of done from the first commit onwards.
 
 **Next.** B1, the domain model with migrations, models, factories and
 policies, followed by B7, the analysis models.
+
+---
+
+## 2026-09-29 (B1)
+
+**Worked on.** Backlog item B1, the domain model. Migrations, models,
+factories and policies for projects, tasks, work sessions and resume points,
+the `TaskStatus` enum, the relationships to the user, and tests for the
+relationships, the factory states and the ownership policies. The rename of the
+working title to Savepoint was committed beforehand as a separate change.
+
+**Decisions.** The task status is stored rather than derived, and `user_id` is
+stored on tasks and work sessions, recorded as ADR-0006 with the rejected
+alternatives. The rule of one open work session per user is enforced by a
+partial unique index, so that it also holds under double submissions (NFR3),
+and a test shows that the database rejects the second session. Task creation
+is authorised against the target project, so that a task cannot be attached to
+the project of another developer.
+
+**Problems.** After the models were added, `composer test` failed because the
+PHPStan worker exceeded the PHP memory limit of 128 MB, although the analysis
+itself was clean. The limit was raised in the composer script and recorded in
+ADR-0006. The first version of the factories also failed level 7, because
+`findOrFail` on an array argument is typed as a possible collection; querying
+the owner column directly fixed the type without a suppression. The
+`two_factor_*` annotations were removed from the `User` model as planned.
+
+**Next.** B7, the analysis models, which guide B2 and B3.
+

@@ -46,7 +46,7 @@ and is therefore kept out of the prototype.
 | NFR3 | Reliability | The rule that at most one work session per developer is open holds under every sequence of actions, including double submissions. | open | |
 | NFR4 | Reliability | A resume point is never lost: pausing either stores the resume point and closes the session together, or changes nothing. | open | |
 | NFR5 | Security | Every page except the login and registration pages requires an authenticated session. | open | |
-| NFR6 | Security | A developer can only read and change projects, tasks and sessions that belong to their own account. | open | |
+| NFR6 | Security | A developer can only read and change projects, tasks and sessions that belong to their own account. | in progress | `tests/Feature/Policies/OwnershipPolicyTest.php` for the policies; the pages that call them follow in B4 |
 | NFR7 | Privacy | All data stays in the local database. The system sends no telemetry and embeds no third party tracking. | open | |
 | NFR8 | Performance | The overview page responds in under 200 milliseconds of server time with 1,000 tasks and 10,000 work sessions in the database. | open | |
 | NFR9 | Supportability | Every action class is covered by an automated test, static analysis passes at the configured level, and the code style check passes. | open | |

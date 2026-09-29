@@ -29,7 +29,7 @@ Documents to update: `dev-journal.md`, `decision-log.md`.
 
 ## B1: Domain model
 
-Status: open.
+Status: done.
 
 Scope: migrations, Eloquent models, enums and factories for projects, tasks,
 work sessions and resume points, including the relationships between them and

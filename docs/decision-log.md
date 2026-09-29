@@ -141,3 +141,38 @@ criterion asks for. The automatic layout of PlantUML gives less control over
 the placement of elements than a graphical editor, which may require layout
 hints in larger diagrams.
 
+---
+
+## ADR-0006: Stored task status and denormalised ownership
+
+Date: 2026-09-29. Status: accepted.
+
+**Context.** The overview (FR8) filters tasks by lifecycle state, the rule that
+at most one work session per developer is open (FR3, NFR3) has to hold under
+double submissions, and every record has to be restricted to its owner (NFR6).
+
+**Decision.** The lifecycle state is stored in `tasks.status` as the string
+backed enum `TaskStatus`, together with `tasks.completed_at`. The column
+`user_id` is stored on `tasks` and `work_sessions` in addition to the path
+through the project and the task. A partial unique index on
+`work_sessions (user_id) where ended_at is null` lets the database reject a
+second open session. Resume points carry no `user_id` and are owned through
+their task. The models stay in the flat `app/Models` directory, since the
+domain has four entities and no package structure is needed yet.
+
+**Alternatives.** Deriving the state from the existence of an open session and
+a completion timestamp avoids redundancy, but every overview query would need a
+join and a subquery, and the statechart would exist only implicitly. Resolving
+ownership through the project for tasks and through the task for sessions was
+rejected because every policy check and every ownership filter would load a
+second record, and because the partial index needs the owner on the session
+row.
+
+**Consequences.** The status column and the sessions can disagree if an action
+changes one without the other, so the lifecycle actions of B2 must change both
+inside one transaction and are tested for that. The factories copy `user_id`
+from the parent so that the two paths to the owner never differ. The partial
+index is SQLite syntax, which is acceptable under ADR-0003 and has to be
+revisited if the database changes. The PHPStan step of `composer test` now
+passes `--memory-limit=512M`, because the default limit of 128 MB crashed the
+parallel worker once the domain model was added.
