@@ -79,7 +79,7 @@ Documents to update: `requirements.md` (FR5, NFR1, NFR2), `dev-journal.md`.
 
 ## B4: Project and task management pages
 
-Status: open.
+Status: done. The screenshots for the report are taken by the author at the end of the project.
 
 Scope: Livewire pages to create, edit, archive and delete projects and tasks,
 using Flux components.

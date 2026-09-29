@@ -211,3 +211,32 @@ rejected because FR7 does not require it and it would widen the scope.
 stated as a limitation in the evaluation. The B4 archive action must not
 reject projects with open tasks.
 
+---
+
+## ADR-0008: Deletion rules, task creation in archived projects and branch names
+
+Date: 2026-09-29. Status: accepted.
+
+**Context.** The project and task pages of B4 delete records and accept a Git
+branch name that FR10 later places into a copyable `git switch` command.
+
+**Decision.** A task, or a project that contains one, cannot be deleted while a
+task is active, because the cascade would discard its open work session and the
+time recorded for it. Paused and completed tasks can be deleted together with
+their sessions and resume points. A task cannot be created in an archived
+project, which extends the rule of ADR-0007 that no new work starts there. The
+prototype offers no way to restore an archived project. A branch name is
+limited to letters, digits, dots, underscores, slashes and hyphens.
+
+**Alternatives.** Closing the open session and then deleting the task was
+rejected, because a delete would then silently change the time report.
+Soft deletion was rejected, since nothing in the requirements needs deleted
+records and it would add a filter to every query. Accepting any branch name
+and escaping it when the command is built was rejected, because the restriction
+also excludes names that git itself rejects and keeps the validation in one
+place.
+
+**Consequences.** An archived project stays archived, which is a limitation
+for the evaluation and a candidate for a later requirement. The pattern is
+stricter than git, which permits some further characters.
+

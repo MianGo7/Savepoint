@@ -197,3 +197,35 @@ archived project shows that the pause is rolled back when the start fails.
 
 **Next.** Commit B3; B4 follows.
 
+---
+
+## 2026-09-29 (B4)
+
+**Worked on.** Backlog item B4, the project and task management pages. Seven
+new actions (`CreateProject`, `RenameProject`, `ArchiveProject`,
+`DeleteProject`, `CreateTask`, `UpdateTask`, `DeleteTask`), the pages
+`projects` (list, create, rename, archive, delete), `projects/{project}`
+(tasks with status and links to start, edit and delete) and the task form for
+creating and editing, and the navigation. The starter kit links to its own
+repository and documentation were replaced by a link to the projects, as
+planned in the leftovers list.
+
+**Decisions.** Recorded as ADR-0008: active tasks cannot be deleted, tasks
+cannot be created in archived projects, archived projects cannot be restored,
+and branch names are restricted to a safe character set. Archiving does not
+reject projects with open tasks, as ADR-0007 requires. The analysis model
+draws one control object `ManageProjects` and one `ManageTasks`; the code has
+one action per operation, in line with ADR-0002, which is material for B8.
+Authorisation happens on every mutating method of the pages, since a Livewire
+method can be called with any id.
+
+**Problems.** A new task instance did not carry the database default of its
+status, which a test caught; the action now reloads it. The wording of the
+`ProjectArchived` message promised a restore that does not exist and was
+corrected. The item asks for screenshots of the pages for the report, which
+have not been taken yet; they are taken at the end, together with the others
+for Section 5.1.
+
+**Next.** B5, the overview. The screenshots of the pages are taken at the end
+of the project, together with the others for Section 5.1.
+

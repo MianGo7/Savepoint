@@ -18,8 +18,8 @@ stated next to it.
 
 | ID | Requirement | Individual feature | Status | Implemented in | Verified by |
 | --- | --- | --- | --- | --- | --- |
-| FR1 | The developer can create, rename and archive projects that group tasks. | no | open | | |
-| FR2 | The developer can create, edit and delete tasks within a project, each with a title, an optional description, an optional estimate and an optional Git branch name. | no | open | | |
+| FR1 | The developer can create, rename and archive projects that group tasks. | no | done | `CreateProject`, `RenameProject`, `ArchiveProject`, `DeleteProject`, `pages::projects.index` | `tests/Feature/Actions/ProjectAndTaskActionsTest.php`, `tests/Feature/Projects/ProjectPagesTest.php` |
+| FR2 | The developer can create, edit and delete tasks within a project, each with a title, an optional description, an optional estimate and an optional Git branch name. | no | done | `CreateTask`, `UpdateTask`, `DeleteTask`, `pages::projects.show`, `pages::tasks.form` | `tests/Feature/Actions/ProjectAndTaskActionsTest.php`, `tests/Feature/Projects/ProjectPagesTest.php`, `tests/Feature/Tasks/TaskFormPageTest.php` |
 | FR3 | The developer can start a task, which opens a work session. At most one task per developer is active at any time. | no | in progress | `StartTask`, `OpenWorkSession`; page follows in B5 | `tests/Feature/Actions/TaskLifecycleTest.php` |
 | FR4 | The developer can pause the active task only by recording a resume point that states where the work stopped and what the next step is. Pausing closes the open work session. | yes | in progress | `PauseTask`; page follows in B3 | `tests/Feature/Actions/TaskLifecycleTest.php` |
 | FR5 | Starting a task while another task is active first asks for the resume point of the active task and then starts the new one in a single flow. | yes | in progress | `SwitchTask`, `resources/views/pages/tasks/⚡start.blade.php`; linked from the overview in B5 | `tests/Feature/Actions/SwitchTaskTest.php`, `tests/Feature/Tasks/StartPageTest.php` |
@@ -46,7 +46,7 @@ and is therefore kept out of the prototype.
 | NFR3 | Reliability | The rule that at most one work session per developer is open holds under every sequence of actions, including double submissions. | in progress | `tests/Feature/Actions/TaskLifecycleTest.php` for start, resume and double submission, `tests/Feature/Models/DomainModelTest.php` for the index; the switch follows in B3 |
 | NFR4 | Reliability | A resume point is never lost: pausing either stores the resume point and closes the session together, or changes nothing. | done | `tests/Feature/Actions/TaskLifecycleTest.php`, including a pause that fails while the resume point is stored |
 | NFR5 | Security | Every page except the login and registration pages requires an authenticated session. | open | |
-| NFR6 | Security | A developer can only read and change projects, tasks and sessions that belong to their own account. | in progress | `tests/Feature/Policies/OwnershipPolicyTest.php` for the policies; the pages that call them follow in B4 |
+| NFR6 | Security | A developer can only read and change projects, tasks and sessions that belong to their own account. | done | `tests/Feature/Policies/OwnershipPolicyTest.php` for the policies; foreign user cases in `ProjectPagesTest.php`, `TaskFormPageTest.php` and `StartPageTest.php` |
 | NFR7 | Privacy | All data stays in the local database. The system sends no telemetry and embeds no third party tracking. | open | |
 | NFR8 | Performance | The overview page responds in under 200 milliseconds of server time with 1,000 tasks and 10,000 work sessions in the database. | open | |
 | NFR9 | Supportability | Every action class is covered by an automated test, static analysis passes at the configured level, and the code style check passes. | open | |
