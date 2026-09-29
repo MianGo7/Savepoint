@@ -117,3 +117,32 @@ test('a task in an archived project is reported on the page', function () {
 
     expect($task->refresh()->status)->toBe(TaskStatus::Todo);
 });
+
+test('earlier resume points are listed after the latest one', function () {
+    $task = Task::factory()->paused()->create();
+    ResumePoint::factory()->for($task)->create(['where_stopped' => 'First stop', 'next_step' => 'First step']);
+    ResumePoint::factory()->for($task)->create(['where_stopped' => 'Second stop', 'next_step' => 'Second step']);
+    ResumePoint::factory()->for($task)->create(['where_stopped' => 'Third stop', 'next_step' => 'Third step']);
+
+    $component = Livewire::actingAs($task->user)->test('pages::tasks.start', ['task' => $task]);
+
+    expect($component->instance()->earlierResumePoints->pluck('where_stopped')->all())->toBe(['Second stop', 'First stop']);
+    $component->assertSee('Third stop')->assertSee('Second stop')->assertSee('First stop');
+});
+
+test('a task with a single resume point shows no history', function () {
+    $task = Task::factory()->paused()->create();
+    ResumePoint::factory()->for($task)->create();
+
+    Livewire::actingAs($task->user)
+        ->test('pages::tasks.start', ['task' => $task])
+        ->assertDontSeeHtml('data-test="resume-point-history"');
+});
+
+test('a task without resume points shows no history', function () {
+    $task = Task::factory()->create();
+
+    Livewire::actingAs($task->user)
+        ->test('pages::tasks.start', ['task' => $task])
+        ->assertDontSeeHtml('data-test="resume-point-history"');
+});

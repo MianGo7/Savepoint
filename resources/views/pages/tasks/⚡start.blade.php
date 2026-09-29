@@ -11,6 +11,7 @@ use App\Exceptions\TaskTransitionNotAllowed;
 use App\Models\ResumePoint;
 use App\Models\Task;
 use Flux\Flux;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -48,6 +49,18 @@ new #[Title('Start task')] class extends Component {
     public function latestResumePoint(): ?ResumePoint
     {
         return $this->task->latestResumePoint;
+    }
+
+    /**
+     * The resume points before the latest one, newest first (FR6). The order is
+     * by id, like the one that defines the latest resume point of a task.
+     *
+     * @return Collection<int, ResumePoint>
+     */
+    #[Computed]
+    public function earlierResumePoints(): Collection
+    {
+        return $this->task->resumePoints()->orderByDesc('id')->get()->slice(1)->values();
     }
 
     /**
@@ -97,6 +110,23 @@ new #[Title('Start task')] class extends Component {
             <flux:callout.text>{{ $this->latestResumePoint->where_stopped }}</flux:callout.text>
             <flux:callout.text>{{ __('Next step: :step', ['step' => $this->latestResumePoint->next_step]) }}</flux:callout.text>
         </flux:callout>
+    @endif
+
+    @if ($this->earlierResumePoints->isNotEmpty())
+        <details class="rounded-lg border border-zinc-200 p-3 dark:border-zinc-700" data-test="resume-point-history">
+            <summary class="cursor-pointer font-medium">
+                {{ trans_choice('Earlier resume point (:count)|Earlier resume points (:count)', $this->earlierResumePoints->count()) }}
+            </summary>
+            <ul class="mt-3 space-y-3">
+                @foreach ($this->earlierResumePoints as $point)
+                    <li class="text-sm" wire:key="history-{{ $point->id }}">
+                        <div>{{ $point->where_stopped }}</div>
+                        <flux:text size="sm">{{ __('Next step: :step', ['step' => $point->next_step]) }}</flux:text>
+                        <flux:text size="sm">{{ $point->created_at->diffForHumans() }}</flux:text>
+                    </li>
+                @endforeach
+            </ul>
+        </details>
     @endif
 
     <form wire:submit="submit" class="space-y-6">
