@@ -139,7 +139,7 @@ Documents to update: `docs/diagrams/README.md`, `dev-journal.md`.
 
 ## B8: Design models
 
-Status: open. Taken after B6.
+Status: done. Taken after B6.
 
 Scope: the design models of Chapters 3 and 4 as PlantUML sources, drawn from
 the implemented code: the sequence diagram of the switch, the package and

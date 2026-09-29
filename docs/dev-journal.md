@@ -296,3 +296,53 @@ as a limitation for the evaluation in Chapter 5.
 
 **Next.** B8, the design models, then the evaluation material in B9.
 
+---
+
+## 2026-09-29 (B8)
+
+**Worked on.** Backlog item B8, the design models, drawn from the code as it
+stands after B6. New are the sequence diagram of the switch
+(`switch-sequence.puml`), the package and component diagram
+(`subsystems.puml`), the deployment diagram (`deployment.puml`), the diagram of
+global control (`global-control.puml`) and seven class diagrams, one per
+package: `package-models`, `package-task-actions`, `package-project-actions`,
+`package-queries`, `package-policies`, `package-exceptions` and
+`package-pages`. All render with PlantUML without errors, and the class,
+method and page names were taken from the source files. The analysis object
+model and the statechart of B7 were revised where the implementation deviated.
+
+**Deviations from the analysis models.**
+
+- The control objects `ManageProjects` and `ManageTasks` became seven actions
+  with one operation each (`CreateProject`, `RenameProject`, `ArchiveProject`,
+  `DeleteProject`, `CreateTask`, `UpdateTask`, `DeleteTask`), in line with
+  ADR-0002.
+- `ResumeTask` does not depend on `StartTask`. Both delegate to a shared action
+  `OpenWorkSession`, which the analysis did not foresee, and `SwitchTask`
+  depends on `PauseTask`, `StartTask` and `ResumeTask`.
+- The boundary object `ResumePointDialog` does not exist. The resume point
+  form is part of the pages `tasks.start` and `dashboard`, because a route
+  with a form was simpler to test and reach than a dialog (B3).
+- The boundary objects `ProjectsPage`, `TaskFormPage`, `OverviewPage` and
+  `TimeReportPage` were renamed to the Livewire components `projects.index`,
+  `projects.show`, `tasks.form`, `tasks.start`, `dashboard` and `reports.time`;
+  the overview additionally offers pausing and completing.
+- The statechart gained the guard that the project is not archived on the
+  transitions start and resume (ADR-0007). Deleting a task is not a
+  transition, and is refused for an active task (ADR-0008).
+- The queries `OverviewQuery` and `TimeReportQuery` and the policies are
+  control objects that the first analysis model showed only as queries, and the
+  policies not at all.
+
+**Decisions.** The deployment diagram shows only the nodes the application
+uses: the browser, the PHP runtime and the SQLite file. The queue worker and
+the Vite server that `composer run dev` starts are left out, since the
+application dispatches no job and Vite only builds the assets. The Fortify
+authentication is drawn as one component, because the starter kit code is not
+part of the design of this system.
+
+**Problems.** None with the rendering. The diagrams are correct for the code of
+this commit and have to be revised together with any later change to the
+classes they show.
+
+**Next.** B9, the evaluation material, after the `/sloc` measurement.
