@@ -1,4 +1,4 @@
-# Task Manager for Developers
+# Savepoint
 
 A personal task management system for software development work, built
 around the cost of switching between tasks. Pausing a task requires a short
@@ -37,7 +37,7 @@ The full list of requirements, including the ones deliberately deferred, is in
 ## Set up and run
 
     git clone <repository url>
-    cd task-manager-for-devs
+    cd Savepoint
     composer setup
     composer run dev
 
