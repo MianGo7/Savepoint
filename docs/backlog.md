@@ -64,7 +64,7 @@ Documents to update: `requirements.md` (FR3, FR4, FR6, FR7, NFR3, NFR4),
 
 ## B3: Switch with resume point
 
-Status: open.
+Status: done.
 
 Scope: the action that pauses the active task with a resume point and starts
 another task in one transaction, and the Livewire flow that asks for the

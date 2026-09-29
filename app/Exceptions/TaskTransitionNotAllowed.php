@@ -19,6 +19,11 @@ final class TaskTransitionNotAllowed extends RuntimeException
         ]));
     }
 
+    public static function withoutActiveTask(): self
+    {
+        return new self(__('There is no active task to switch from.'));
+    }
+
     public static function withoutOpenSession(): self
     {
         return new self(__('The active task has no open work session.'));

@@ -161,3 +161,39 @@ marked done.
 
 **Next.** B3, the switch with a resume point.
 
+---
+
+## 2026-09-29 (B3)
+
+**Worked on.** Backlog item B3, the switch with a resume point. The action
+`SwitchTask` pauses the active task with the resume point and starts or resumes
+the target inside one transaction. The Livewire page `tasks/{task}/start`
+starts or resumes a task directly when nothing is active, shows the latest
+resume point of a paused task first (FR6), and asks for the resume point of the
+active task when another one is running. Tests cover the action (eight cases)
+and the page (nine cases).
+
+**Decisions.** The flow lives on a routable page of its own, because the task
+list (B4) and the overview (B5) do not exist yet, and the pages of those items
+only have to link to it. A page that changes state on a plain visit was
+avoided: the page always shows a button, so that opening the address never
+starts a session. The active task is looked up again on submit, because it may
+have changed since the page was rendered. The analysis model names a
+`ResumePointDialog` as the boundary object; the code has a page instead, which
+is material for the comparison in B8.
+
+**Problems.** The keyboard requirement (NFR2) and the count of interactions
+(NFR1) cannot be shown by a Livewire component test, which asserts on state and
+not on focus order. The form is a native form with autofocus on the first field
+and single line inputs, so that Enter submits, but this has not been tried in a
+browser yet, and both requirements stayed in progress until the flow was tried by hand. The
+author completed it with the keyboard alone in the browser, after which NFR1 and
+NFR2 were marked done. An automated browser test was not possible, because the
+browser used for it could not reach local addresses, and a
+first test server started with `php artisan serve` read the development
+database instead of the throwaway one, because that command does not forward
+`DB_DATABASE`; the second server was started with the PHP built-in server. A test for a target in an
+archived project shows that the pause is rolled back when the start fails.
+
+**Next.** Commit B3; B4 follows.
+
