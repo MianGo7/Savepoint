@@ -346,3 +346,39 @@ this commit and have to be revised together with any later change to the
 classes they show.
 
 **Next.** B9, the evaluation material, after the `/sloc` measurement.
+
+**Implementation size (2026-09-29, commit 94a77d5 plus the uncommitted diagrams
+of B8).** Measured with a short Python script, because `cloc` is not installed.
+It counts non blank lines of `.php` and `.blade.php` files, without comment
+lines (`//`, `#`, block comments, Blade and HTML comments) and without the
+`<?php` tag; attributes such as `#[Title]` count as code. A file counts as
+starter kit code when it already existed in the scaffold commit `1541b78`,
+even if it was modified later, which understates the own share slightly for
+`User.php`, `routes/web.php`, `AppServiceProvider` and the layouts. Lines of
+Livewire pages include their template markup.
+
+| Package | Own files | Own lines | Starter kit files | Starter kit lines |
+| --- | --- | --- | --- | --- |
+| `app/Actions/Tasks` | 9 | 227 | 0 | 0 |
+| `app/Actions/Projects` | 4 | 50 | 0 | 0 |
+| `app/Actions/Fortify` | 0 | 0 | 2 | 40 |
+| `app/Models` | 4 | 131 | 1 | 42 |
+| `app/Enums` | 1 | 17 | 0 | 0 |
+| `app/Exceptions` | 5 | 57 | 0 | 0 |
+| `app/Policies` | 4 | 61 | 0 | 0 |
+| `app/Queries` | 2 | 108 | 0 | 0 |
+| `app/Concerns`, `app/Http`, `app/Livewire`, `app/Providers` | 0 | 0 | 6 | 136 |
+| `resources/views/pages` (Livewire pages) | 6 | 567 | 0 | 0 |
+| `resources/views/pages/auth` and `settings` | 0 | 0 | 11 | 390 |
+| `resources/views` layouts, components, partials | 0 | 0 | 21 | 735 |
+| `database` migrations, factories, seeders | 8 | 208 | 5 | 147 |
+| `routes`, `config`, `bootstrap` | 0 | 0 | 16 | 592 |
+| **Application code** | **43** | **1,426** | **62** | **2,082** |
+| `tests/` | 12 | 1,118 | 11 | 244 |
+
+The code written for this project amounts to 1,426 lines in 43 files, against
+1,118 lines of tests, a ratio of 0.78 lines of test per line of application
+code. The starter kit contributes 2,082 lines of application code, most of it
+configuration and layouts, and is not credited to the project. The diagrams and
+the documents are not part of the count.
+
