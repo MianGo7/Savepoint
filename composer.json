@@ -2,7 +2,7 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/livewire-starter-kit",
     "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
+    "description": "Personal task management system for software development work, built around resume points.",
     "keywords": [
         "laravel",
         "framework"
