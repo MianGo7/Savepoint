@@ -16,6 +16,9 @@ the design models are drawn from the implemented code.
 | `subsystems.puml` | Package and component diagram | 3.2 | B8 | done |
 | `deployment.puml` | Deployment diagram | 3.3 | B8 | done |
 | `global-control.puml` | Request handling from browser to action | 3.6 | B8 | done |
+| `object-diagram.puml` | Object diagram of a developer with two tasks, their sessions and a resume point | 2.4 | B10 | done |
+| `database-schema.puml` | Entity relationship diagram of the tables, from the migrations | 3.5 | B10 | done |
+| `object-definitions.md` | Definitions of the entity objects, notes for Section 2.4 | 2.4 | B10 | done |
 | `use-case-flows.md` | Flows of events of the use cases, notes for the appendix | 2.4 | B7 | done |
 | `package-models.puml` | Class diagram of the entity objects and the task status | 4 | B8 | done |
 | `package-task-actions.puml` | Class diagram of the task actions | 4 | B8 | done |

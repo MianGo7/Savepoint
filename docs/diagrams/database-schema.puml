@@ -1,0 +1,85 @@
+@startuml database-schema
+!include _style.puml
+
+hide circle
+skinparam linetype ortho
+
+entity users {
+  * id : integer <<PK>>
+  --
+  * name : varchar
+  * email : varchar <<unique>>
+  email_verified_at : timestamp
+  * password : varchar
+  remember_token : varchar
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity projects {
+  * id : integer <<PK>>
+  --
+  * user_id : integer <<FK>>
+  * name : varchar
+  archived_at : timestamp
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity tasks {
+  * id : integer <<PK>>
+  --
+  * project_id : integer <<FK>>
+  * user_id : integer <<FK>>
+  * title : varchar
+  description : text
+  estimate_minutes : integer
+  branch_name : varchar
+  * status : varchar
+  completed_at : timestamp
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity work_sessions {
+  * id : integer <<PK>>
+  --
+  * task_id : integer <<FK>>
+  * user_id : integer <<FK>>
+  * started_at : timestamp
+  ended_at : timestamp
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+entity resume_points {
+  * id : integer <<PK>>
+  --
+  * task_id : integer <<FK>>
+  * work_session_id : integer <<FK>>
+  * where_stopped : text
+  * next_step : text
+  created_at : timestamp
+  updated_at : timestamp
+}
+
+users ||--o{ projects : on delete cascade
+projects ||--o{ tasks : on delete cascade
+users ||--o{ tasks : on delete cascade
+tasks ||--o{ work_sessions : on delete cascade
+users ||--o{ work_sessions : on delete cascade
+tasks ||--o{ resume_points : on delete cascade
+work_sessions ||--o| resume_points : on delete cascade
+
+note bottom of work_sessions
+  Unique index work_sessions_one_open_per_user on (user_id)
+  where ended_at is null. Further indexes: (task_id),
+  (user_id, started_at).
+end note
+
+note bottom of tasks
+  Indexes: (user_id, status), (project_id).
+  status holds the value of TaskStatus, default todo.
+end note
+
+@enduml

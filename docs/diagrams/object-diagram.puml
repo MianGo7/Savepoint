@@ -1,0 +1,57 @@
+@startuml object-diagram
+!include _style.puml
+
+object "developer : User" as developer {
+  name = "Mian Gohar Ehsan"
+}
+
+object "savepoint : Project" as savepoint {
+  name = "Savepoint"
+  archived_at = null
+}
+
+object "parser : Task" as parser {
+  title = "Write parser"
+  branch_name = "feature/parser"
+  status = Paused
+  completed_at = null
+}
+
+object "validator : Task" as validator {
+  title = "Write validator"
+  branch_name = null
+  status = Active
+  completed_at = null
+}
+
+object "parserSession : WorkSession" as parserSession {
+  started_at = 2026-09-29 09:00
+  ended_at = 2026-09-29 10:30
+}
+
+object "validatorSession : WorkSession" as validatorSession {
+  started_at = 2026-09-29 10:30
+  ended_at = null
+}
+
+object "parserResumePoint : ResumePoint" as parserResumePoint {
+  where_stopped = "Quotes are parsed"
+  next_step = "Cover escaped quotes"
+}
+
+developer -- savepoint
+savepoint -- parser
+savepoint -- validator
+developer -- parser
+developer -- validator
+parser -- parserSession
+validator -- validatorSession
+parser -- parserResumePoint
+parserSession -- parserResumePoint
+
+note bottom of validatorSession
+  The only open work session of the developer.
+  The partial unique index allows at most one.
+end note
+
+@enduml
