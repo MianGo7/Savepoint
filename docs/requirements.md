@@ -20,11 +20,11 @@ stated next to it.
 | --- | --- | --- | --- | --- | --- |
 | FR1 | The developer can create, rename and archive projects that group tasks. | no | open | | |
 | FR2 | The developer can create, edit and delete tasks within a project, each with a title, an optional description, an optional estimate and an optional Git branch name. | no | open | | |
-| FR3 | The developer can start a task, which opens a work session. At most one task per developer is active at any time. | no | open | | |
-| FR4 | The developer can pause the active task only by recording a resume point that states where the work stopped and what the next step is. Pausing closes the open work session. | yes | open | | |
+| FR3 | The developer can start a task, which opens a work session. At most one task per developer is active at any time. | no | in progress | `StartTask`, `OpenWorkSession`; page follows in B5 | `tests/Feature/Actions/TaskLifecycleTest.php` |
+| FR4 | The developer can pause the active task only by recording a resume point that states where the work stopped and what the next step is. Pausing closes the open work session. | yes | in progress | `PauseTask`; page follows in B3 | `tests/Feature/Actions/TaskLifecycleTest.php` |
 | FR5 | Starting a task while another task is active first asks for the resume point of the active task and then starts the new one in a single flow. | yes | open | | |
-| FR6 | Resuming a paused task shows its most recent resume point before the new work session begins. Earlier resume points remain available as a history. | yes | open | | |
-| FR7 | The developer can complete a task from the active or the paused state. Completing closes any open work session. | no | open | | |
+| FR6 | Resuming a paused task shows its most recent resume point before the new work session begins. Earlier resume points remain available as a history. | yes | in progress | `ResumeTask` opens the session; showing the resume point follows in B5 | `tests/Feature/Actions/TaskLifecycleTest.php` |
+| FR7 | The developer can complete a task from the active or the paused state. Completing closes any open work session. | no | in progress | `CompleteTask`; page follows in B5 | `tests/Feature/Actions/TaskLifecycleTest.php` |
 | FR8 | An overview lists the active task and all paused tasks, ordered by last activity, each with its latest resume point. | yes | open | | |
 | FR9 | The system reports the time spent per task and per day, derived from the recorded work sessions. | no | open | | |
 | FR10 | For a task with a branch name, the system offers the matching `git switch` command for copying. | yes | open | | |
@@ -43,8 +43,8 @@ and is therefore kept out of the prototype.
 | --- | --- | --- | --- | --- |
 | NFR1 | Usability | Switching from the active task to another task, including the resume point, takes no more than three interactions after the target task has been chosen. | open | |
 | NFR2 | Usability | Every interaction of the switch and pause flow can be completed with the keyboard alone. | open | |
-| NFR3 | Reliability | The rule that at most one work session per developer is open holds under every sequence of actions, including double submissions. | open | |
-| NFR4 | Reliability | A resume point is never lost: pausing either stores the resume point and closes the session together, or changes nothing. | open | |
+| NFR3 | Reliability | The rule that at most one work session per developer is open holds under every sequence of actions, including double submissions. | in progress | `tests/Feature/Actions/TaskLifecycleTest.php` for start, resume and double submission, `tests/Feature/Models/DomainModelTest.php` for the index; the switch follows in B3 |
+| NFR4 | Reliability | A resume point is never lost: pausing either stores the resume point and closes the session together, or changes nothing. | done | `tests/Feature/Actions/TaskLifecycleTest.php`, including a pause that fails while the resume point is stored |
 | NFR5 | Security | Every page except the login and registration pages requires an authenticated session. | open | |
 | NFR6 | Security | A developer can only read and change projects, tasks and sessions that belong to their own account. | in progress | `tests/Feature/Policies/OwnershipPolicyTest.php` for the policies; the pages that call them follow in B4 |
 | NFR7 | Privacy | All data stays in the local database. The system sends no telemetry and embeds no third party tracking. | open | |

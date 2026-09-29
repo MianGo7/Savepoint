@@ -46,7 +46,7 @@ Documents to update: `requirements.md` (NFR6), `dev-journal.md`,
 
 ## B2: Task lifecycle actions
 
-Status: open.
+Status: done.
 
 Scope: the actions to start, pause, resume and complete a task, including the
 rule that at most one work session per user is open and the rule that pausing

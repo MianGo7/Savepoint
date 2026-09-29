@@ -123,3 +123,41 @@ decision from the author before B4.
 
 **Next.** B2, the task lifecycle actions, implemented against the statechart.
 
+---
+
+## 2026-09-29 (B2)
+
+**Worked on.** Backlog item B2, the lifecycle actions `StartTask`,
+`PauseTask`, `ResumeTask` and `CompleteTask` in `app/Actions/Tasks/`, the
+three exceptions `TaskTransitionNotAllowed`, `SessionAlreadyOpen` and
+`ResumePointRequired`, and 26 tests in `TaskLifecycleTest`. The five
+transitions of the statechart are covered, each with the permitted path and
+every rejected path.
+
+Afterwards the open points of B2 were decided and recorded as ADR-0007: a test
+now covers the translation of an index violation, tasks in an archived project
+cannot be started or resumed but can be paused and completed, and completed
+tasks are not reopened.
+
+**Decisions.** Starting and resuming differ only in the status they expect, so
+both delegate to an internal action `OpenWorkSession`. The analysis model
+of B7 draws `ResumeTask` depending on `StartTask`; the code deviates from it,
+which is recorded here for the comparison with the design model in B8. Every
+action reads the task again inside its transaction, so that a second
+submission of the same request meets the status the first one set. The
+partial unique index from B1 remains the last line of defence against two open
+sessions, and a violation is translated into `SessionAlreadyOpen`. Resume point
+texts are trimmed, and a text of blanks counts as missing. Ownership is not
+checked in the actions, since the pages authorise through the policies.
+
+**Problems.** SQLite has no row locks, so `lockForUpdate` has no effect in the
+local database and the protection against concurrent requests rests on the
+re-read of the status and on the index. The translation of a unique violation
+in `OpenWorkSession` is not exercised by a test, because a single process
+cannot pass the application check and the index at the same moment; the index
+itself is covered in `DomainModelTest`. The requirements FR3, FR4, FR6, FR7 and
+NFR3 stay in progress until the pages and the switch exist, and only NFR4 is
+marked done.
+
+**Next.** B3, the switch with a resume point.
+
