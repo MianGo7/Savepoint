@@ -48,7 +48,7 @@ new #[Title('Task')] class extends Component {
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
             'estimate_minutes' => ['nullable', 'integer', 'min:1', 'max:100000'],
-            'branch_name' => ['nullable', 'string', 'max:255', 'regex:/^[A-Za-z0-9._\/-]+$/'],
+            'branch_name' => ['nullable', 'string', 'max:255', 'regex:'.Task::BRANCH_PATTERN],
         ]);
 
         try {

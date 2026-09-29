@@ -229,3 +229,40 @@ for Section 5.1.
 **Next.** B5, the overview. The screenshots of the pages are taken at the end
 of the project, together with the others for Section 5.1.
 
+---
+
+## 2026-09-29 (B5)
+
+**Worked on.** Backlog item B5, the overview. The dashboard is now the Livewire
+page `pages::dashboard`, which replaces the placeholder view of the starter
+kit. It shows the active task with the time it has been running and the
+paused tasks, each with its latest resume point and, where a branch name
+exists, the `git switch` command in a copyable field (FR10). The read model is
+the query class `OverviewQuery`.
+
+**Decisions.** No column stores the last activity of a task, so the paused
+tasks are ordered by the end of their latest work session, computed in a
+subquery; the existing index on the task of the work sessions was sufficient,
+and no schema change was needed. The overview also carries the forms to pause
+the active task and buttons to complete a task, which B5 does not list
+explicitly but which FR4 and FR7 need a page for; both call the existing
+actions. The command is built by `Task::switchCommand`, which returns nothing
+for a name outside the allowed pattern, and the pattern now rejects a leading
+hyphen (ADR-0008), because a name such as `--detach` would otherwise become an
+option of git.
+
+Tasks with the status todo do not appear on the overview, because FR8 lists
+only the active and the paused tasks. The empty state therefore links to the
+projects, where a task is started. An "up next" section with the todo tasks
+and a start button would shorten the way to the first start, but it changes
+the meaning of FR8, and it is kept as future work for the evaluation.
+
+**Problems.** The response time of NFR8 was checked with a test that seeds 1,000
+tasks, 300 of them paused, and 10,000 work sessions by bulk insert; the page
+took 33 ms of server time in the run that was measured. The figure comes from
+in-memory SQLite in the test process and is not a benchmark of the deployed
+system. An assertion helper that does not exist in Livewire was used in the
+first version of a test and replaced by a count on the rendered HTML.
+
+**Next.** B6, the time report.
+

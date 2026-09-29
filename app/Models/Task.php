@@ -35,6 +35,12 @@ class Task extends Model
     use HasFactory;
 
     /**
+     * ADR-0008: the characters of a branch name, which must not start with a
+     * hyphen, so that it can never be read as an option of git.
+     */
+    public const BRANCH_PATTERN = '/^[A-Za-z0-9._\/][A-Za-z0-9._\/-]*$/';
+
+    /**
      * @return array<string, string>
      */
     protected function casts(): array
@@ -75,6 +81,28 @@ class Task extends Model
     public function resumePoints(): HasMany
     {
         return $this->hasMany(ResumePoint::class);
+    }
+
+    /**
+     * @return HasOne<WorkSession, $this>
+     */
+    public function openWorkSession(): HasOne
+    {
+        return $this->hasOne(WorkSession::class)->whereNull('ended_at');
+    }
+
+    /**
+     * The command that checks out the branch of the task, or null when the task
+     * has no branch or the stored name does not match the allowed pattern.
+     * Implements FR10.
+     */
+    public function switchCommand(): ?string
+    {
+        if ($this->branch_name === null || preg_match(self::BRANCH_PATTERN, $this->branch_name) !== 1) {
+            return null;
+        }
+
+        return 'git switch '.$this->branch_name;
     }
 
     /**

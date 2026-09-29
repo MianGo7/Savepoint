@@ -226,7 +226,9 @@ time recorded for it. Paused and completed tasks can be deleted together with
 their sessions and resume points. A task cannot be created in an archived
 project, which extends the rule of ADR-0007 that no new work starts there. The
 prototype offers no way to restore an archived project. A branch name is
-limited to letters, digits, dots, underscores, slashes and hyphens.
+limited to letters, digits, dots, underscores, slashes and hyphens, and it
+must not start with a hyphen, so that a `git switch` command built from it
+cannot be read as an option.
 
 **Alternatives.** Closing the open session and then deleting the task was
 rejected, because a delete would then silently change the time report.

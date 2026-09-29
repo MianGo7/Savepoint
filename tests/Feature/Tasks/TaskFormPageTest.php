@@ -58,6 +58,7 @@ test('invalid input is refused', function (string $field, mixed $value, string $
     'missing title' => ['title', '', 'required'],
     'estimate below one' => ['estimate_minutes', 0, 'min'],
     'branch with a space' => ['branch_name', 'feature x', 'regex'],
+    'branch starting with a hyphen' => ['branch_name', '--detach', 'regex'],
     'branch with shell characters' => ['branch_name', 'a;rm -rf', 'regex'],
 ]);
 

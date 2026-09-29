@@ -93,7 +93,7 @@ Documents to update: `requirements.md` (FR1, FR2), `dev-journal.md`.
 
 ## B5: Where was I overview
 
-Status: open.
+Status: done.
 
 Scope: the dashboard showing the active task and the paused tasks ordered by
 last activity with their latest resume point, and the `git switch` command for
