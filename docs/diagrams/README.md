@@ -9,13 +9,14 @@ the design models are drawn from the implemented code.
 
 | File | Diagram | Report section | Item | Status |
 | --- | --- | --- | --- | --- |
-| `use-cases.puml` | Use case diagram | 2.4 | B7 | open |
-| `analysis-object-model.puml` | Analysis class diagram with entity, boundary and control objects | 2.4 | B7 | open |
-| `task-statechart.puml` | Statechart of a task | 2.4 | B7 | open |
+| `use-cases.puml` | Use case diagram | 2.4 | B7 | done |
+| `analysis-object-model.puml` | Analysis class diagram with entity, boundary and control objects | 2.4 | B7 | done |
+| `task-statechart.puml` | Statechart of a task | 2.4 | B7 | done |
 | `switch-sequence.puml` | Sequence diagram of switching tasks with a resume point | 2.4 | B8 | open |
 | `subsystems.puml` | Package and component diagram | 3.2 | B8 | open |
 | `deployment.puml` | Deployment diagram | 3.3 | B8 | open |
 | `global-control.puml` | Request handling from browser to action | 3.6 | B8 | open |
+| `use-case-flows.md` | Flows of events of the use cases, notes for the appendix | 2.4 | B7 | done |
 | `package-*.puml` | One class diagram per package | 4.x | B8 | open |
 
 ## Conventions

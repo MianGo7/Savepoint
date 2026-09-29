@@ -92,3 +92,34 @@ the owner column directly fixed the type without a suppression. The
 
 **Next.** B7, the analysis models, which guide B2 and B3.
 
+---
+
+## 2026-09-29 (B7)
+
+**Worked on.** Backlog item B7, the analysis models: the use case diagram
+(`use-cases.puml`), the analysis class diagram with entity, boundary and
+control objects (`analysis-object-model.puml`), the statechart of a task
+(`task-statechart.puml`), and the flows of events of the ten use cases in
+`use-case-flows.md`. All three diagrams were rendered with PlantUML without
+errors.
+
+**Decisions.** The use cases follow FR1 to FR10 one to one, with the two
+deferred requirements FR11 and FR12 left out. SwitchTask is modelled as an
+include of PauseTask and StartTask rather than as a transition of its own, so
+that the statechart has exactly five transitions for B2 to implement: start,
+pause, resume, complete from active and complete from paused. The atomicity of
+the switch is stated on the statechart as a note and is the subject of B3.
+Entity names and attributes in the class diagram are those of the models
+from B1, whereas the boundary and control names are provisional and are
+corrected in B8 where the code differs.
+
+**Problems.** Two points are not settled by the requirements. FR7 permits
+completion only from the active and the paused state, so a task with the status
+todo cannot be completed and a completed task cannot be reopened; both were
+kept out of the statechart. The behaviour of tasks in an archived project is
+likewise unspecified, and the flows assume that archiving does not touch them.
+Both are recorded as open points at the end of `use-case-flows.md` and need a
+decision from the author before B4.
+
+**Next.** B2, the task lifecycle actions, implemented against the statechart.
+

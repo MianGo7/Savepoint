@@ -1,0 +1,88 @@
+@startuml analysis-object-model
+!include _style.puml
+
+package "Entity objects" {
+  class User <<entity>>
+  class Project <<entity>> {
+    name
+    archived_at
+  }
+  class Task <<entity>> {
+    title
+    description
+    estimate_minutes
+    branch_name
+    status
+    completed_at
+  }
+  class WorkSession <<entity>> {
+    started_at
+    ended_at
+  }
+  class ResumePoint <<entity>> {
+    where_stopped
+    next_step
+  }
+  enum TaskStatus <<entity>> {
+    Todo
+    Active
+    Paused
+    Completed
+  }
+}
+
+package "Boundary objects" {
+  class ProjectsPage <<boundary>>
+  class TaskFormPage <<boundary>>
+  class OverviewPage <<boundary>>
+  class ResumePointDialog <<boundary>>
+  class TimeReportPage <<boundary>>
+}
+
+package "Control objects" {
+  class ManageProjects <<control>>
+  class ManageTasks <<control>>
+  class StartTask <<control>>
+  class PauseTask <<control>>
+  class SwitchTask <<control>>
+  class ResumeTask <<control>>
+  class CompleteTask <<control>>
+  class OverviewQuery <<control>>
+  class TimeReportQuery <<control>>
+}
+
+User "1" -- "0..*" Project
+Project "1" -- "0..*" Task
+User "1" -- "0..*" Task
+Task "1" -- "0..*" WorkSession
+User "1" -- "0..*" WorkSession
+Task "1" -- "0..*" ResumePoint
+WorkSession "1" -- "0..1" ResumePoint
+Task --> TaskStatus
+
+ProjectsPage ..> ManageProjects
+TaskFormPage ..> ManageTasks
+OverviewPage ..> StartTask
+OverviewPage ..> ResumeTask
+OverviewPage ..> CompleteTask
+OverviewPage ..> OverviewQuery
+ResumePointDialog ..> PauseTask
+ResumePointDialog ..> SwitchTask
+TimeReportPage ..> TimeReportQuery
+
+ManageProjects ..> Project
+ManageTasks ..> Task
+StartTask ..> Task
+StartTask ..> WorkSession
+PauseTask ..> WorkSession
+PauseTask ..> ResumePoint
+SwitchTask ..> PauseTask
+SwitchTask ..> StartTask
+ResumeTask ..> StartTask
+CompleteTask ..> Task
+CompleteTask ..> WorkSession
+OverviewQuery ..> Task
+OverviewQuery ..> ResumePoint
+TimeReportQuery ..> WorkSession
+
+@enduml

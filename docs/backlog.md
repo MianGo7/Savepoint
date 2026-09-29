@@ -121,7 +121,7 @@ Documents to update: `requirements.md` (FR9), `dev-journal.md`.
 
 ## B7: Analysis models
 
-Status: open. Taken after B1, before B2.
+Status: done. Taken after B1, before B2.
 
 Scope: the analysis models of Section 2.4 as PlantUML sources in
 `docs/diagrams/`: the use case diagram with the flow of events of every use

@@ -1,0 +1,26 @@
+@startuml task-statechart
+!include _style.puml
+
+[*] --> Todo : create
+
+Todo --> Active : start\n[no open work session of the developer]
+Active --> Paused : pause\n[resume point given]
+Paused --> Active : resume\n[no open work session of the developer]
+Active --> Completed : complete
+Paused --> Completed : complete
+Completed --> [*]
+
+Todo : entry / status = todo
+Active : entry / open work session
+Active : exit / close work session
+Paused : entry / store resume point
+Completed : entry / set completed_at
+
+note bottom of Active
+  Switching is not a transition of its own. It is
+  the pause of one task followed by the start of
+  another in a single transaction, so both
+  transitions must succeed together or not at all.
+end note
+
+@enduml

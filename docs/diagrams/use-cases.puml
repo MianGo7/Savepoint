@@ -1,0 +1,39 @@
+@startuml use-cases
+!include _style.puml
+
+left to right direction
+
+actor Developer
+
+rectangle Savepoint {
+  usecase "ManageProjects" as UC1
+  usecase "ManageTasks" as UC2
+  usecase "StartTask" as UC3
+  usecase "PauseTask" as UC4
+  usecase "SwitchTask" as UC5
+  usecase "ResumeTask" as UC6
+  usecase "CompleteTask" as UC7
+  usecase "ViewOverview" as UC8
+  usecase "ViewTimeReport" as UC9
+  usecase "CopyBranchCommand" as UC10
+  usecase "RecordResumePoint" as UC11
+}
+
+Developer --> UC1
+Developer --> UC2
+Developer --> UC3
+Developer --> UC4
+Developer --> UC5
+Developer --> UC6
+Developer --> UC7
+Developer --> UC8
+Developer --> UC9
+Developer --> UC10
+
+UC4 .> UC11 : <<include>>
+UC5 .> UC4 : <<include>>
+UC5 .> UC3 : <<include>>
+UC6 .> UC8 : <<extend>>
+UC10 .> UC8 : <<extend>>
+
+@enduml
