@@ -176,3 +176,38 @@ index is SQLite syntax, which is acceptable under ADR-0003 and has to be
 revisited if the database changes. The PHPStan step of `composer test` now
 passes `--memory-limit=512M`, because the default limit of 128 MB crashed the
 parallel worker once the domain model was added.
+
+---
+
+## ADR-0007: Concurrency, archived projects and completed tasks
+
+Date: 2026-09-29. Status: accepted.
+
+**Context.** The lifecycle actions of B2 raised three questions that the
+requirements leave open: how far protection against concurrent requests has to
+go on SQLite, which lifecycle transitions a task in an archived project may
+take, and whether a completed task can be reopened.
+
+**Decision.** Concurrent requests are handled by reading the task again inside
+the transaction and by the partial unique index of ADR-0006, which remains the
+actual guarantee; `lockForUpdate` is kept although SQLite ignores it. Archiving
+a project leaves its tasks unchanged, and starting or resuming a task in an
+archived project is rejected with `ProjectArchived`, whereas pausing and
+completing remain possible so that no session is stranded. A completed task
+cannot be reopened, so the statechart keeps its five transitions.
+
+**Alternatives.** Serialising writers with `BEGIN IMMEDIATE` was rejected,
+because the system is used by one developer on a local database (NFR7,
+NFR11) and the index already gives the guarantee. A version column for
+optimistic locking was rejected as a schema change that duplicates the index.
+Refusing to archive a project with active or paused tasks was rejected in favour
+of the first rule because it moves the check into the archiving action and
+blocks the developer, whereas the chosen rule needs one check where work is
+opened. Letting tasks in archived projects stay startable would make
+archiving mean only that the project is hidden. A reopen transition was
+rejected because FR7 does not require it and it would widen the scope.
+
+**Consequences.** The prototype has no way to undo a completion, which is
+stated as a limitation in the evaluation. The B4 archive action must not
+reject projects with open tasks.
+

@@ -40,7 +40,8 @@ work session.
 2. The system opens a work session with the current time, sets the status of
    the task to active and shows the task.
 
-Exceptional flows: if the developer has an open work session, the system
+Exceptional flows: if the project of the task is archived, the start is
+rejected. If the developer has an open work session, the system
 starts no session and the developer is directed to SwitchTask. A double
 submission is rejected by the database, so that at most one open session
 exists (NFR3). A task of another developer is refused by the policy.
@@ -134,9 +135,9 @@ Entry condition: the developer is signed in.
 Exceptional flows: a session that crosses midnight is split at the day
 boundary. A session that is still open is counted up to the current time.
 
-## Open points for the analysis
+## Decisions on the open points
 
-The behaviour of an archived project with tasks that are still active is not
-fixed by the requirements. The flows above assume that archiving does not
-touch tasks. Whether a completed task may be reopened is likewise not
-required by FR7 and is excluded from the statechart.
+Archiving a project does not touch its tasks. A task that is active in an
+archived project can still be paused and completed, whereas starting or
+resuming a task in an archived project is rejected (ADR-0007). A completed
+task cannot be reopened in the prototype (ADR-0007).
