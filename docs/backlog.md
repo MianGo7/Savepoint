@@ -167,3 +167,22 @@ Done when: the figures are measured rather than estimated, and every row in
 `requirements.md` has a final status.
 
 Documents to update: `requirements.md`, `dev-journal.md`.
+
+---
+
+## B10: Follow-up from the review
+
+Status: done. The screenshots for the report are taken by the author.
+
+Scope: the gaps found when the repository was compared with the examination
+requirements: the history of resume points that FR6 promises, the object
+diagram and the definitions of the objects for Section 2.4, and the diagram of
+the persistent data for Section 3.5.
+
+Done when: the earlier resume points of a task are listed on the start page and
+covered by tests, and the new diagrams render without errors and match the
+migrations and the models.
+
+Documents to update: `requirements.md` (FR6), `docs/diagrams/README.md`,
+`dev-journal.md`.
+

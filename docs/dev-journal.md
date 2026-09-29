@@ -414,3 +414,33 @@ framework packages are now excluded.
 **Next.** The screenshots, a review of the whole repository against
 `docs/course-context.local.md`, and the report itself.
 
+---
+
+## 2026-09-29 (B10)
+
+**Worked on.** Follow-up item B10, taken from the review of the repository
+against the examination requirements. FR6 promised that earlier resume points
+remain available as a history, but the start page showed only the latest one;
+it now lists the earlier ones below it, and three tests cover the list, the
+case of a single resume point and the case of none. Two diagrams and a set of
+definitions were added for Chapters 2 and 3: an object diagram of a developer
+with two tasks (`object-diagram.puml`), the entity relationship diagram of the
+tables (`database-schema.puml`), drawn from the migrations, and the definitions
+of the entity objects (`object-definitions.md`).
+
+**Decisions.** The history sits on the page that is shown before a task is
+resumed, because that is where FR6 places it, and not on the overview, which
+would grow with every pause. It is a collapsed list so that the latest resume
+point stays the first thing the developer reads. The order of the list is by
+identifier, like the one that defines the latest resume point. The review
+found the gap only because the requirement text was compared with the pages
+one sentence at a time; a test on the stored data had made FR6 look done.
+
+**Problems.** The object diagram uses one invented example, since a real
+database would not show all states at once. The entity relationship diagram
+shows the users table from the starter kit without the tables for sessions,
+cache and jobs, which the application does not use.
+
+**Next.** The screenshots, the sections of the report that have no material in
+the repository yet (2.2 and 3.1), and the report itself.
+
