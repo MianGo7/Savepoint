@@ -10,9 +10,10 @@ The requirement set is a first draft derived from the chosen concept. It is
 revised when the problem scenarios and the visionary scenario are written,
 and every change is recorded in `dev-journal.md`.
 
-Status values: open, in progress, done, deferred. A deferred requirement is
-specified on purpose but not implemented in the prototype, and the reason is
-stated next to it.
+Status values: open, in progress, done, partly met, deferred. A deferred
+requirement is specified on purpose but not implemented in the prototype, and
+the reason is stated next to it. A requirement is partly met when it holds for
+some cases only, and the limit is stated next to it.
 
 ## Functional requirements
 
@@ -45,10 +46,10 @@ and is therefore kept out of the prototype.
 | NFR2 | Usability | Every interaction of the switch and pause flow can be completed with the keyboard alone. | done | Native form with autofocus and single line fields, so that Enter submits; the flow was completed with the keyboard alone by hand in the browser on 2026-09-29 |
 | NFR3 | Reliability | The rule that at most one work session per developer is open holds under every sequence of actions, including double submissions. | done | `tests/Feature/Actions/TaskLifecycleTest.php` for start, resume and double submission, `tests/Feature/Models/DomainModelTest.php` for the index; `tests/Feature/Actions/SwitchTaskTest.php` for the switch |
 | NFR4 | Reliability | A resume point is never lost: pausing either stores the resume point and closes the session together, or changes nothing. | done | `tests/Feature/Actions/TaskLifecycleTest.php`, including a pause that fails while the resume point is stored |
-| NFR5 | Security | Every page except the login and registration pages requires an authenticated session. | open | |
+| NFR5 | Security | Every page except the welcome page and the pages for login, registration and password reset requires an authenticated session. | done | `tests/Feature/RouteAccessTest.php` requests every page as a guest and expects the login page, apart from the welcome, login, registration and password reset pages |
 | NFR6 | Security | A developer can only read and change projects, tasks and sessions that belong to their own account. | done | `tests/Feature/Policies/OwnershipPolicyTest.php` for the policies; foreign user cases in `ProjectPagesTest.php`, `TaskFormPageTest.php` and `StartPageTest.php` |
-| NFR7 | Privacy | All data stays in the local database. The system sends no telemetry and embeds no third party tracking. | open | |
+| NFR7 | Privacy | All data stays in the local database. The system sends no telemetry and embeds no third party tracking. | done | Read from the code and the build output: the application has no outgoing HTTP calls and no analytics package; the font is downloaded once at build time and served from `/build/assets`. The welcome page carries links to third party sites that are followed only by a click |
 | NFR8 | Performance | The overview page responds in under 200 milliseconds of server time with 1,000 tasks and 10,000 work sessions in the database. | done | `tests/Feature/Queries/OverviewQueryTest.php`, which seeds 1,000 tasks (300 paused) and 10,000 work sessions; the page took 33 ms of server time in one run on in-memory SQLite |
-| NFR9 | Supportability | Every action class is covered by an automated test, static analysis passes at the configured level, and the code style check passes. | open | |
-| NFR10 | Supportability | A new rule can be added as a new action class without changing existing user interface components. | open | |
-| NFR11 | Implementation | The system is implemented in PHP with Laravel and Livewire, uses SQLite for persistence, and runs locally on macOS with PHP 8.3 or newer. | open | |
+| NFR9 | Supportability | Every action class is covered by an automated test, static analysis passes at the configured level, and the code style check passes. | done | `composer test` runs the code style check, PHPStan at level 7 without baseline and 169 tests; every action and both queries are named in a test, and `OpenWorkSession` is covered through `StartTask` and `ResumeTask` |
+| NFR10 | Supportability | A new rule can be added as a new action class without changing existing user interface components. | partly met | A rule can be added inside an action without touching a page, as ADR-0007 did with the archived project check in `OpenWorkSession`. A rule that throws a new exception class does need a page change, because every page lists the exceptions it catches |
+| NFR11 | Implementation | The system is implemented in PHP with Laravel and Livewire, uses SQLite for persistence, and runs locally on macOS with PHP 8.3 or newer. | done | `composer.json` requires PHP 8.3 or newer, Laravel 13 and Livewire 4, `.env.example` selects SQLite; the suite passes on macOS with PHP 8.4.22, and PHP 8.3 itself was not run |

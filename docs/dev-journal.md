@@ -382,3 +382,35 @@ code. The starter kit contributes 2,082 lines of application code, most of it
 configuration and layouts, and is not credited to the project. The diagrams and
 the documents are not part of the count.
 
+---
+
+## 2026-09-29 (B9)
+
+**Worked on.** Backlog item B9, the material for Chapter 5. The lines of code per
+package were measured earlier on the same day (the entry of B8). Every row of
+`requirements.md` now has a final status: FR1 to FR10 and the requirements
+NFR1 to NFR9 and NFR11 are done, FR11 and FR12 are deferred as specified, and
+NFR10 is partly met. The screenshots are taken by the author at the end.
+
+**Decisions.** Checking NFR5 against the routes showed that the welcome page is
+public, so the requirement as written was not true; its wording now names the
+welcome page and the password reset pages as exceptions, and a new test
+requests every route as a guest to keep the claim checked. A status "partly
+met" was added to the legend for NFR10, because a rule that stays inside an
+action needs no change to a page, whereas a rule with a new exception class
+does: every page lists the exceptions it catches. A common interface for the
+exceptions of rules would make the requirement fully true, and it is recorded
+as an improvement for the evaluation, not made here.
+
+**Problems.** NFR7 and NFR11 rest on reading the code and the configuration and
+not on a test. The font is downloaded from a font provider during the build and
+served locally afterwards, which the build output confirms. PHP 8.3 was not run
+locally, and continuous integration runs PHP 8.4 on Linux, so the claim of
+support for 8.3 and for macOS rests on the constraint in `composer.json` and on
+the local runs with PHP 8.4.22. The first version of the route test counted the
+static script route of Flux as a page and failed; static routes of the
+framework packages are now excluded.
+
+**Next.** The screenshots, a review of the whole repository against
+`docs/course-context.local.md`, and the report itself.
+

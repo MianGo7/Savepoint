@@ -157,7 +157,7 @@ Documents to update: `docs/diagrams/README.md`, `dev-journal.md`.
 
 ## B9: Evaluation material
 
-Status: open.
+Status: done. The screenshots for the report are taken by the author at the end of the project.
 
 Scope: source lines of code per package for Section 5.1, the verification of
 every requirement against the prototype for Section 5.2, and screenshots of
