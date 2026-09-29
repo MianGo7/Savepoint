@@ -1,0 +1,28 @@
+@startuml package-project-actions
+!include _style.puml
+
+class CreateProject <<control>> {
+  handle(user: User, name: string): Project
+}
+class RenameProject <<control>> {
+  handle(project: Project, name: string): Project
+}
+class ArchiveProject <<control>> {
+  handle(project: Project): Project
+}
+class DeleteProject <<control>> {
+  handle(project: Project): void
+}
+
+class User <<entity>>
+class Project <<entity>>
+class Task <<entity>>
+
+CreateProject ..> User
+CreateProject ..> Project
+RenameProject ..> Project
+ArchiveProject ..> Project
+DeleteProject ..> Project
+DeleteProject ..> Task
+
+@enduml

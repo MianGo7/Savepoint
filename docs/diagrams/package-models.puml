@@ -1,0 +1,81 @@
+@startuml package-models
+!include _style.puml
+
+enum TaskStatus <<entity>> {
+  Todo
+  Active
+  Paused
+  Completed
+  label(): string
+}
+
+class User <<entity>> {
+  id: int
+  name: string
+  email: string
+  initials(): string
+  projects(): HasMany
+  tasks(): HasMany
+  workSessions(): HasMany
+}
+
+class Project <<entity>> {
+  id: int
+  user_id: int
+  name: string
+  archived_at: CarbonImmutable|null
+  user(): BelongsTo
+  tasks(): HasMany
+}
+
+class Task <<entity>> {
+  BRANCH_PATTERN: string
+  id: int
+  project_id: int
+  user_id: int
+  title: string
+  description: string|null
+  estimate_minutes: int|null
+  branch_name: string|null
+  status: TaskStatus
+  completed_at: CarbonImmutable|null
+  project(): BelongsTo
+  user(): BelongsTo
+  workSessions(): HasMany
+  resumePoints(): HasMany
+  openWorkSession(): HasOne
+  latestResumePoint(): HasOne
+  switchCommand(): string|null
+}
+
+class WorkSession <<entity>> {
+  id: int
+  task_id: int
+  user_id: int
+  started_at: CarbonImmutable
+  ended_at: CarbonImmutable|null
+  task(): BelongsTo
+  user(): BelongsTo
+  resumePoint(): HasOne
+}
+
+class ResumePoint <<entity>> {
+  id: int
+  task_id: int
+  work_session_id: int
+  where_stopped: string
+  next_step: string
+  task(): BelongsTo
+  workSession(): BelongsTo
+}
+
+User "1" -- "0..*" Project
+Project "1" -- "0..*" Task
+User "1" -- "0..*" Task
+Task "1" -- "0..*" WorkSession
+User "1" -- "0..*" WorkSession
+Task "1" -- "0..*" ResumePoint
+WorkSession "1" -- "0..1" ResumePoint
+Task --> TaskStatus
+
+@enduml

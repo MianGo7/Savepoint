@@ -1,0 +1,30 @@
+@startuml package-exceptions
+!include _style.puml
+
+class RuntimeException
+
+class TaskTransitionNotAllowed <<control>> {
+  {static} from(status: TaskStatus, transition: string): self
+  {static} withoutActiveTask(): self
+  {static} withoutOpenSession(): self
+}
+class SessionAlreadyOpen <<control>> {
+  {static} forUser(): self
+}
+class ResumePointRequired <<control>> {
+  {static} make(): self
+}
+class ProjectArchived <<control>> {
+  {static} make(): self
+}
+class ActiveTaskCannotBeDeleted <<control>> {
+  {static} make(): self
+}
+
+RuntimeException <|-- TaskTransitionNotAllowed
+RuntimeException <|-- SessionAlreadyOpen
+RuntimeException <|-- ResumePointRequired
+RuntimeException <|-- ProjectArchived
+RuntimeException <|-- ActiveTaskCannotBeDeleted
+
+@enduml

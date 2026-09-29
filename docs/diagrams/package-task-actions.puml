@@ -1,0 +1,55 @@
+@startuml package-task-actions
+!include _style.puml
+
+class CreateTask <<control>> {
+  handle(project: Project, data: array): Task
+}
+class UpdateTask <<control>> {
+  handle(task: Task, data: array): Task
+}
+class DeleteTask <<control>> {
+  handle(task: Task): void
+}
+class OpenWorkSession <<control>> {
+  handle(task: Task, expected: TaskStatus, transition: string): WorkSession
+}
+class StartTask <<control>> {
+  handle(task: Task): WorkSession
+}
+class ResumeTask <<control>> {
+  handle(task: Task): WorkSession
+}
+class PauseTask <<control>> {
+  handle(task: Task, whereStopped: string, nextStep: string): ResumePoint
+}
+class CompleteTask <<control>> {
+  handle(task: Task): Task
+}
+class SwitchTask <<control>> {
+  handle(target: Task, whereStopped: string, nextStep: string): array
+}
+
+class Task <<entity>>
+class Project <<entity>>
+class WorkSession <<entity>>
+class ResumePoint <<entity>>
+
+StartTask --> OpenWorkSession
+ResumeTask --> OpenWorkSession
+SwitchTask --> PauseTask
+SwitchTask --> StartTask
+SwitchTask --> ResumeTask
+
+CreateTask ..> Project
+CreateTask ..> Task
+UpdateTask ..> Task
+DeleteTask ..> Task
+OpenWorkSession ..> Task
+OpenWorkSession ..> WorkSession
+PauseTask ..> Task
+PauseTask ..> WorkSession
+PauseTask ..> ResumePoint
+CompleteTask ..> Task
+CompleteTask ..> WorkSession
+
+@enduml

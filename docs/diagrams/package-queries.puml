@@ -1,0 +1,25 @@
+@startuml package-queries
+!include _style.puml
+
+class OverviewQuery <<control>> {
+  active(user: User): Task|null
+  paused(user: User): Collection
+}
+class TimeReportQuery <<control>> {
+  handle(user: User, from: CarbonImmutable, to: CarbonImmutable): array
+  -days(seconds: array, tasks): array
+  -totals(seconds: array, tasks): array
+}
+
+class User <<entity>>
+class Task <<entity>>
+class WorkSession <<entity>>
+
+OverviewQuery ..> User
+OverviewQuery ..> Task
+OverviewQuery ..> WorkSession
+TimeReportQuery ..> User
+TimeReportQuery ..> Task
+TimeReportQuery ..> WorkSession
+
+@enduml

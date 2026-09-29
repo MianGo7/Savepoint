@@ -1,0 +1,101 @@
+@startuml package-pages
+!include _style.puml
+
+class "pages::dashboard" as Dashboard <<boundary>> {
+  where_stopped: string
+  next_step: string
+  activeTask(): Task|null
+  pausedTasks(): Collection
+  pause(action: PauseTask): void
+  complete(id: int, action: CompleteTask): void
+}
+class "pages::projects.index" as ProjectsIndex <<boundary>> {
+  name: string
+  renamingId: int|null
+  renamingName: string
+  projects(): Collection
+  archivedProjects(): Collection
+  create(action: CreateProject): void
+  startRename(id: int): void
+  rename(action: RenameProject): void
+  cancelRename(): void
+  archive(id: int, action: ArchiveProject): void
+  delete(id: int, action: DeleteProject): void
+}
+class "pages::projects.show" as ProjectsShow <<boundary>> {
+  project: Project
+  mount(project: Project): void
+  tasks(): Collection
+  delete(id: int, action: DeleteTask): void
+}
+class "pages::tasks.form" as TasksForm <<boundary>> {
+  project: Project|null
+  task: Task|null
+  title: string
+  description: string
+  estimate_minutes: int|null
+  branch_name: string
+  mount(project: Project|null, task: Task|null): void
+  save(create: CreateTask, update: UpdateTask): void
+}
+class "pages::tasks.start" as TasksStart <<boundary>> {
+  task: Task
+  where_stopped: string
+  next_step: string
+  mount(task: Task): void
+  activeTask(): Task|null
+  latestResumePoint(): ResumePoint|null
+  submit(start: StartTask, resume: ResumeTask, switch: SwitchTask): void
+}
+class "pages::reports.time" as ReportsTime <<boundary>> {
+  from: string
+  to: string
+  mount(): void
+  report(): array|null
+  duration(seconds: int): string
+}
+
+class OverviewQuery <<control>>
+class TimeReportQuery <<control>>
+class TaskPolicy <<control>>
+class ProjectPolicy <<control>>
+
+package "Task actions" {
+  class PauseTask <<control>>
+  class CompleteTask <<control>>
+  class CreateTask <<control>>
+  class UpdateTask <<control>>
+  class DeleteTask <<control>>
+  class StartTask <<control>>
+  class ResumeTask <<control>>
+  class SwitchTask <<control>>
+}
+package "Project actions" {
+  class CreateProject <<control>>
+  class RenameProject <<control>>
+  class ArchiveProject <<control>>
+  class DeleteProject <<control>>
+}
+
+Dashboard ..> OverviewQuery
+Dashboard ..> PauseTask
+Dashboard ..> CompleteTask
+Dashboard ..> TaskPolicy
+ProjectsIndex ..> CreateProject
+ProjectsIndex ..> RenameProject
+ProjectsIndex ..> ArchiveProject
+ProjectsIndex ..> DeleteProject
+ProjectsIndex ..> ProjectPolicy
+ProjectsShow ..> DeleteTask
+ProjectsShow ..> ProjectPolicy
+ProjectsShow ..> TaskPolicy
+TasksForm ..> CreateTask
+TasksForm ..> UpdateTask
+TasksForm ..> TaskPolicy
+TasksStart ..> StartTask
+TasksStart ..> ResumeTask
+TasksStart ..> SwitchTask
+TasksStart ..> TaskPolicy
+ReportsTime ..> TimeReportQuery
+
+@enduml

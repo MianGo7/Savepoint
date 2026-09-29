@@ -1,0 +1,35 @@
+@startuml package-policies
+!include _style.puml
+
+class ProjectPolicy <<control>> {
+  view(user: User, project: Project): bool
+  update(user: User, project: Project): bool
+  delete(user: User, project: Project): bool
+}
+class TaskPolicy <<control>> {
+  create(user: User, project: Project): bool
+  view(user: User, task: Task): bool
+  update(user: User, task: Task): bool
+  delete(user: User, task: Task): bool
+}
+class WorkSessionPolicy <<control>> {
+  view(user: User, workSession: WorkSession): bool
+}
+class ResumePointPolicy <<control>> {
+  view(user: User, resumePoint: ResumePoint): bool
+}
+
+class User <<entity>>
+class Project <<entity>>
+class Task <<entity>>
+class WorkSession <<entity>>
+class ResumePoint <<entity>>
+
+ProjectPolicy ..> Project
+TaskPolicy ..> Task
+TaskPolicy ..> Project
+WorkSessionPolicy ..> WorkSession
+ResumePointPolicy ..> ResumePoint
+ResumePointPolicy ..> Task : owner through the task
+
+@enduml
