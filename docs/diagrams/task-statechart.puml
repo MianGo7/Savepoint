@@ -3,9 +3,9 @@
 
 [*] --> Todo : create
 
-Todo --> Active : start\n[no open work session of the developer]
+Todo --> Active : start\n[project not archived,\nno open work session of the developer]
 Active --> Paused : pause\n[resume point given]
-Paused --> Active : resume\n[no open work session of the developer]
+Paused --> Active : resume\n[project not archived,\nno open work session of the developer]
 Active --> Completed : complete
 Paused --> Completed : complete
 Completed --> [*]

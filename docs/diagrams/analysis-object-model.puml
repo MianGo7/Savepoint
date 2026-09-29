@@ -32,21 +32,28 @@ package "Entity objects" {
 }
 
 package "Boundary objects" {
-  class ProjectsPage <<boundary>>
-  class TaskFormPage <<boundary>>
-  class OverviewPage <<boundary>>
-  class ResumePointDialog <<boundary>>
-  class TimeReportPage <<boundary>>
+  class "pages::projects.index" as ProjectsIndex <<boundary>>
+  class "pages::projects.show" as ProjectsShow <<boundary>>
+  class "pages::tasks.form" as TasksForm <<boundary>>
+  class "pages::tasks.start" as TasksStart <<boundary>>
+  class "pages::dashboard" as Dashboard <<boundary>>
+  class "pages::reports.time" as ReportsTime <<boundary>>
 }
 
 package "Control objects" {
-  class ManageProjects <<control>>
-  class ManageTasks <<control>>
+  class CreateProject <<control>>
+  class RenameProject <<control>>
+  class ArchiveProject <<control>>
+  class DeleteProject <<control>>
+  class CreateTask <<control>>
+  class UpdateTask <<control>>
+  class DeleteTask <<control>>
   class StartTask <<control>>
   class PauseTask <<control>>
   class SwitchTask <<control>>
   class ResumeTask <<control>>
   class CompleteTask <<control>>
+  class OpenWorkSession <<control>>
   class OverviewQuery <<control>>
   class TimeReportQuery <<control>>
 }
@@ -60,25 +67,37 @@ Task "1" -- "0..*" ResumePoint
 WorkSession "1" -- "0..1" ResumePoint
 Task --> TaskStatus
 
-ProjectsPage ..> ManageProjects
-TaskFormPage ..> ManageTasks
-OverviewPage ..> StartTask
-OverviewPage ..> ResumeTask
-OverviewPage ..> CompleteTask
-OverviewPage ..> OverviewQuery
-ResumePointDialog ..> PauseTask
-ResumePointDialog ..> SwitchTask
-TimeReportPage ..> TimeReportQuery
+ProjectsIndex ..> CreateProject
+ProjectsIndex ..> RenameProject
+ProjectsIndex ..> ArchiveProject
+ProjectsIndex ..> DeleteProject
+ProjectsShow ..> DeleteTask
+TasksForm ..> CreateTask
+TasksForm ..> UpdateTask
+TasksStart ..> StartTask
+TasksStart ..> ResumeTask
+TasksStart ..> SwitchTask
+Dashboard ..> PauseTask
+Dashboard ..> CompleteTask
+Dashboard ..> OverviewQuery
+ReportsTime ..> TimeReportQuery
 
-ManageProjects ..> Project
-ManageTasks ..> Task
-StartTask ..> Task
-StartTask ..> WorkSession
+CreateProject ..> Project
+RenameProject ..> Project
+ArchiveProject ..> Project
+DeleteProject ..> Project
+CreateTask ..> Task
+UpdateTask ..> Task
+DeleteTask ..> Task
+StartTask ..> OpenWorkSession
+ResumeTask ..> OpenWorkSession
+OpenWorkSession ..> Task
+OpenWorkSession ..> WorkSession
 PauseTask ..> WorkSession
 PauseTask ..> ResumePoint
 SwitchTask ..> PauseTask
 SwitchTask ..> StartTask
-ResumeTask ..> StartTask
+SwitchTask ..> ResumeTask
 CompleteTask ..> Task
 CompleteTask ..> WorkSession
 OverviewQuery ..> Task
