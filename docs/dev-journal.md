@@ -37,7 +37,12 @@ SQLite as the database (ADR-0003) and local development without containers
 individual feature. It is specified as FR11 but deferred, because the task
 explicitly welcomes requirements that are specified without being implemented,
 and because the page limit of the report favours a small system described in
-depth over a broader one described superficially.
+depth over a broader one described superficially. The UML models are kept as
+PlantUML sources (ADR-0005) and split into two backlog items: the analysis
+models in B7 are drafted directly after the domain model and guide the
+implementation of the lifecycle, whereas the design models in B8 are drawn
+from the finished code, so that the difference between the two becomes
+material for the evaluation.
 
 **Problems.** Two problems occurred during the set up. First, the Laravel
 installer rejected `.` as the target directory with the message that the
@@ -57,4 +62,4 @@ confirms that generated code is not exempt from the quality checks and that
 the checks belong in the definition of done from the first commit onwards.
 
 **Next.** B1, the domain model with migrations, models, factories and
-policies.
+policies, followed by B7, the analysis models.

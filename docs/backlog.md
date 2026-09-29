@@ -1,7 +1,10 @@
 # Backlog
 
 The work queue. Items are taken one at a time and in order unless a
-dependency says otherwise. Each item names its scope, the condition under
+dependency says otherwise. B7 is taken directly after B1, because the
+analysis models are meant to guide the lifecycle in B2 and B3 rather than
+document it afterwards; its number reflects when it was added, not when it
+is worked on. Each item names its scope, the condition under
 which it counts as done and the documents that have to be updated in the same
 change.
 
@@ -116,23 +119,43 @@ Documents to update: `requirements.md` (FR9), `dev-journal.md`.
 
 ---
 
-## B7: Models for the report
+## B7: Analysis models
 
-Status: open.
+Status: open. Taken after B1, before B2.
 
-Scope: the UML models the report requires, kept as PlantUML sources in
-`docs/diagrams/`: use case diagram, analysis class diagram, statechart of the
-task, sequence diagram of the switch, package and component diagram,
-deployment diagram, and one class diagram per package for Chapter 4.
+Scope: the analysis models of Section 2.4 as PlantUML sources in
+`docs/diagrams/`: the use case diagram with the flow of events of every use
+case, the analysis class diagram with entity, boundary and control objects,
+and the statechart of a task. They describe the intended behaviour, and B2 and
+B3 are implemented against them.
 
-Done when: every diagram listed in `docs/diagrams/README.md` exists and
-matches the implemented code.
+Done when: the three diagrams render without errors, the flows of events are
+written down for the appendix, and the statechart names every transition that
+B2 has to implement.
 
 Documents to update: `docs/diagrams/README.md`, `dev-journal.md`.
 
 ---
 
-## B8: Evaluation material
+## B8: Design models
+
+Status: open. Taken after B6.
+
+Scope: the design models of Chapters 3 and 4 as PlantUML sources, drawn from
+the implemented code: the sequence diagram of the switch, the package and
+component diagram, the deployment diagram, the diagram of global control, and
+one class diagram per package. The analysis models from B7 are revised where
+the implementation deviated from them, and each deviation is recorded.
+
+Done when: every diagram listed in `docs/diagrams/README.md` exists, renders
+without errors and matches the code, and the deviations from the analysis
+models are listed in `dev-journal.md`.
+
+Documents to update: `docs/diagrams/README.md`, `dev-journal.md`.
+
+---
+
+## B9: Evaluation material
 
 Status: open.
 

@@ -42,3 +42,6 @@ yarn-error.log
 # IU objects to its examination tasks being republished, so these stay off
 # the remote. Removing this rule is a deliberate decision, not a cleanup.
 *.local.md
+
+# Rendered diagrams, generated from the PlantUML sources in docs/diagrams.
+/docs/diagrams/out/

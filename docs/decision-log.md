@@ -112,3 +112,32 @@ ADR-0003 removes the only candidate among them.
 Node.js on the machine. The hardware and software mapping in Section 3.3
 consists of one node running the PHP process and the SQLite file, and the
 browser as the client.
+
+---
+
+## ADR-0005: PlantUML for the UML models
+
+Date: 2026-09-29. Status: accepted.
+
+**Context.** The report requires use case, class, statechart, sequence,
+package, component and deployment diagrams, and the models have to stay
+consistent with a codebase that changes throughout the project.
+
+**Decision.** All models are written as PlantUML text files in
+`docs/diagrams/` and rendered to SVG or PNG for the report. A shared style file
+keeps every figure black on white. The analysis models are drafted before the
+lifecycle is implemented (B7), and the design models are drawn from the
+implemented code (B8).
+
+**Alternatives.** Graphical editors such as draw.io and StarUML were rejected
+because their files are hard to compare between versions, so a change to a
+model would not be reviewable in the commit that changes the code. Visual
+Paradigm was rejected for the same reason and additionally requires a licence
+for most diagram types.
+
+**Consequences.** Every model change appears as a readable diff next to the
+code change that caused it, which supports the traceability the process
+criterion asks for. The automatic layout of PlantUML gives less control over
+the placement of elements than a graphical editor, which may require layout
+hints in larger diagrams.
+
