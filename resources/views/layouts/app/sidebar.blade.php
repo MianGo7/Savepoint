@@ -18,6 +18,9 @@
                     <flux:sidebar.item icon="folder" :href="route('projects.index')" :current="request()->routeIs('projects.*', 'tasks.*')" wire:navigate>
                         {{ __('Projects') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="clock" :href="route('reports.time')" :current="request()->routeIs('reports.*')" wire:navigate>
+                        {{ __('Time report') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

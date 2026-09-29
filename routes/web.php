@@ -7,6 +7,8 @@ Route::view('/', 'welcome')->name('home');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::livewire('dashboard', 'pages::dashboard')->name('dashboard');
 
+    Route::livewire('reports/time', 'pages::reports.time')->name('reports.time');
+
     Route::livewire('projects', 'pages::projects.index')->name('projects.index');
     Route::livewire('projects/{project}', 'pages::projects.show')->name('projects.show');
 

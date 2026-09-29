@@ -266,3 +266,33 @@ first version of a test and replaced by a count on the rendered HTML.
 
 **Next.** B6, the time report.
 
+---
+
+## 2026-09-29 (B6)
+
+**Worked on.** Backlog item B6, the time report. The read model
+`TimeReportQuery` derives the time per task and per day from the work
+sessions, and the page `reports/time` shows both for a chosen range, which
+defaults to the last seven days. It is linked in the navigation.
+
+**Decisions.** Where a day begins is a decision of its own, recorded as
+ADR-0009: a configurable display time zone that defaults to UTC, with storage
+remaining in UTC. Sessions are split in PHP at the local midnights and not in
+SQL. A session that is still open counts up to the current time. The range
+is limited to one year, and durations are shown as hours and minutes.
+
+**Problems.** The first version of the test file failed with a fatal error,
+because the helper functions `report` and `session` collide with helpers of
+the framework; they were renamed. PHPStan objected to `array_values` around an
+`array_map` over two arrays, which already returns a list. The tests cover a
+session across one midnight, across several days, across the midnight of
+Europe/Berlin, and over the day of the change to summer time, which has 23
+hours. The time zone of the author is not configured: `.env.example` sets UTC,
+so the days follow UTC until `APP_DISPLAY_TIMEZONE` is set in `.env`.
+
+The report reads the sessions of the requested range into memory, which is
+bounded by the limit of one year and acceptable for one developer; it is noted
+as a limitation for the evaluation in Chapter 5.
+
+**Next.** B8, the design models, then the evaluation material in B9.
+

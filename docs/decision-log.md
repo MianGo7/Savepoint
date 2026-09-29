@@ -242,3 +242,35 @@ place.
 for the evaluation and a candidate for a later requirement. The pattern is
 stricter than git, which permits some further characters.
 
+---
+
+## ADR-0009: Display time zone for the days of the time report
+
+Date: 2026-09-29. Status: accepted.
+
+**Context.** Time is stored in UTC. The time report of FR9 groups work sessions
+by day, and a developer's day begins at local midnight, so the day boundary
+depends on a time zone. Sessions that cross midnight have to be split at that
+boundary, and days with a daylight saving change are not 24 hours long.
+
+**Decision.** A configuration value `app.display_timezone`, read from the
+environment variable `APP_DISPLAY_TIMEZONE` and defaulting to UTC, defines the
+days of the report. `TimeReportQuery` converts the requested dates to instants
+of that zone, splits each session at the local midnights by adding calendar
+days, and counts a session that is still open up to the current time. The
+stored data and the application time zone remain UTC.
+
+**Alternatives.** A time zone per user was rejected because it changes the
+schema of the users table, which the prototype for one developer does not
+justify, and the configuration value can be replaced by such a column later
+without touching the query. Grouping by the UTC date was rejected because
+work late in the evening would be booked to the next day for any developer
+east of Greenwich. Aggregating in SQL with a date function was rejected because
+splitting a session over several days is awkward in SQL and SQLite has no time
+zone database, whereas the sessions of a bounded range can be split in PHP.
+
+**Consequences.** A developer outside UTC has to set `APP_DISPLAY_TIMEZONE`,
+otherwise the days of the report follow UTC. The report reads the sessions of
+the requested range into memory, which is bounded by the range of at most one
+year. Only the report uses the zone; the other pages still show relative times.
+

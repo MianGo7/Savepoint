@@ -108,7 +108,7 @@ Documents to update: `requirements.md` (FR8, FR10, NFR8), `dev-journal.md`.
 
 ## B6: Time report
 
-Status: open.
+Status: done.
 
 Scope: time spent per task and per day, derived from the work sessions.
 

@@ -26,7 +26,7 @@ stated next to it.
 | FR6 | Resuming a paused task shows its most recent resume point before the new work session begins. Earlier resume points remain available as a history. | yes | done | `ResumeTask`, `pages::tasks.start` shows the latest resume point | `tests/Feature/Actions/TaskLifecycleTest.php`, `tests/Feature/Tasks/StartPageTest.php` |
 | FR7 | The developer can complete a task from the active or the paused state. Completing closes any open work session. | no | done | `CompleteTask`, `pages::dashboard` | `tests/Feature/Actions/TaskLifecycleTest.php`, `tests/Feature/DashboardOverviewTest.php` |
 | FR8 | An overview lists the active task and all paused tasks, ordered by last activity, each with its latest resume point. | yes | done | `OverviewQuery`, `pages::dashboard` | `tests/Feature/Queries/OverviewQueryTest.php`, `tests/Feature/DashboardOverviewTest.php` |
-| FR9 | The system reports the time spent per task and per day, derived from the recorded work sessions. | no | open | | |
+| FR9 | The system reports the time spent per task and per day, derived from the recorded work sessions. | no | done | `TimeReportQuery`, `pages::reports.time` | `tests/Feature/Queries/TimeReportQueryTest.php`, `tests/Feature/Reports/TimeReportPageTest.php` |
 | FR10 | For a task with a branch name, the system offers the matching `git switch` command for copying. | yes | done | `Task::switchCommand`, `pages::dashboard` | `tests/Feature/DashboardOverviewTest.php` |
 | FR11 | The developer can set a weekly hour budget per project and is warned when the time recorded in a week exceeds it. | yes | deferred | | |
 | FR12 | Commits are linked to tasks automatically through the branch name, for instance by a local Git hook that reports to the system. | yes | deferred | | |

@@ -69,6 +69,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Display Timezone
+    |--------------------------------------------------------------------------
+    |
+    | Storage stays in UTC. This zone only decides where a day begins and ends
+    | in the time report (ADR-0009).
+    |
+    */
+
+    'display_timezone' => env('APP_DISPLAY_TIMEZONE', 'UTC'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
     |
