@@ -483,3 +483,32 @@ pausing and completing, so PauseTask and CompleteTask extend ViewOverview like
 ResumeTask does, and SwitchTask includes ResumeTask for a paused target, which
 the first version of the model did not show.
 
+**Implementation size (2026-09-30, commit 5466794).** Measured with a short Python
+script, because `cloc` is not installed. It counts non blank lines of `.php`
+and `.blade.php` files without comment lines, and a file counts as starter kit
+code when it already existed in the scaffold commit `1541b78`, even if it was
+modified later. Lines of Livewire pages include their template markup.
+
+| Package | Own files | Own lines | Starter kit files | Starter kit lines |
+| --- | --- | --- | --- | --- |
+| `app/Actions/Tasks` | 9 | 227 | 0 | 0 |
+| `app/Actions/Projects` | 4 | 50 | 0 | 0 |
+| `app/Actions/Fortify` | 0 | 0 | 2 | 40 |
+| `app/Models` | 4 | 131 | 1 | 42 |
+| `app/Enums` | 1 | 17 | 0 | 0 |
+| `app/Exceptions` | 5 | 57 | 0 | 0 |
+| `app/Policies` | 4 | 61 | 0 | 0 |
+| `app/Queries` | 2 | 108 | 0 | 0 |
+| `app/Concerns`, `app/Http`, `app/Livewire`, `app/Providers` | 0 | 0 | 6 | 136 |
+| `resources/views/pages` (Livewire pages) | 6 | 589 | 0 | 0 |
+| `resources/views/pages/auth` and `settings` | 0 | 0 | 11 | 390 |
+| `resources/views` layouts, components, partials | 0 | 0 | 21 | 735 |
+| `database` migrations, factories, seeders | 9 | 320 | 5 | 147 |
+| `routes`, `config`, `bootstrap` | 0 | 0 | 16 | 592 |
+| **Application code** | **44** | **1,560** | **62** | **2,082** |
+| `tests/` | 14 | 1,240 | 11 | 244 |
+
+The code written for this project amounts to 1,560 lines in 44 files, against
+1,240 lines of tests, a ratio of 0.79 lines of test per line of application
+code. The diagrams and the documents are not part of the count.
+
