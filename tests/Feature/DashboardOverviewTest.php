@@ -64,6 +64,7 @@ test('the switch command is null for a missing or unsafe branch name', function 
     'option like' => ['--detach', null],
     'with space' => ['a b', null],
     'shell characters' => ['a;rm', null],
+    'trailing line break' => ["main\n", null],
 ]);
 
 test('the active task is paused from the overview with a resume point', function () {

@@ -36,9 +36,11 @@ class Task extends Model
 
     /**
      * ADR-0008: the characters of a branch name, which must not start with a
-     * hyphen, so that it can never be read as an option of git.
+     * hyphen, so that it can never be read as an option of git. The D modifier
+     * stops the dollar anchor from accepting a trailing line break, which would
+     * let a pasted command run without confirmation.
      */
-    public const BRANCH_PATTERN = '/^[A-Za-z0-9._\/][A-Za-z0-9._\/-]*$/';
+    public const BRANCH_PATTERN = '/^[A-Za-z0-9._\/][A-Za-z0-9._\/-]*$/D';
 
     /**
      * @return array<string, string>

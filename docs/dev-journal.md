@@ -512,3 +512,24 @@ The code written for this project amounts to 1,560 lines in 44 files, against
 1,240 lines of tests, a ratio of 0.79 lines of test per line of application
 code. The diagrams and the documents are not part of the count.
 
+
+---
+
+## 2026-09-30 (branch pattern)
+
+**Worked on.** A review of the branch pattern of ADR-0008 during the
+evaluation for Chapter 5 found that it accepted a name with a trailing line
+break, because the dollar anchor in PHP also matches before a final line
+break. The pattern now carries the D modifier, and the data set of the switch
+command test gained a case for a trailing line break.
+
+**Decisions.** The fix stays within ADR-0008, whose intent is that a stored
+name can never produce an unsafe command, so no new decision record was
+needed.
+
+**Problems.** Input through the application was never affected, because the
+actions trim every branch name before storing it; only a name written
+directly into the database could have produced a command that runs as soon
+as it is pasted into a terminal. The new test failed against the old pattern
+and passes with the fix. The suite now has 179 tests with 503 assertions, and
+static analysis and the code style check pass.
