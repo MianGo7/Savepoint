@@ -1,5 +1,6 @@
 @startuml package-task-actions
 !include _style.puml
+left to right direction
 
 class CreateTask <<control>> {
   handle(project: Project, data: array): Task

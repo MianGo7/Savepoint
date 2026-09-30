@@ -1,5 +1,6 @@
 @startuml package-pages
 !include _style.puml
+left to right direction
 
 class "pages::dashboard" as Dashboard <<boundary>> {
   where_stopped: string
@@ -45,6 +46,7 @@ class "pages::tasks.start" as TasksStart <<boundary>> {
   mount(task: Task): void
   activeTask(): Task|null
   latestResumePoint(): ResumePoint|null
+  earlierResumePoints(): Collection
   submit(start: StartTask, resume: ResumeTask, switch: SwitchTask): void
 }
 class "pages::reports.time" as ReportsTime <<boundary>> {
