@@ -444,3 +444,37 @@ cache and jobs, which the application does not use.
 **Next.** The screenshots, the sections of the report that have no material in
 the repository yet (2.2 and 3.1), and the report itself.
 
+---
+
+## 2026-09-30 (screenshots)
+
+**Worked on.** A demo seeder, `DemoDataSeeder`, so that the pages can be
+photographed for Sections 2.5 and 5.1. It fills the database of the first user
+with four projects, one of them archived, tasks in all four states, a week of
+work sessions, one open session and resume points, and prints the addresses of
+the seven pages to photograph. It is run on purpose with
+`php artisan db:seed --class=DemoDataSeeder`, is not part of `DatabaseSeeder`,
+and does nothing for a user who already has projects. Six tests cover the
+seeded states, the week of sessions, the ownership of the resume points, the
+rule that every earlier session of a task ends with a resume point, and the two
+refusal cases.
+
+**Decisions.** The seeder uses the factories with fixed times instead of the
+lifecycle actions, because the actions stamp the current time and a week of
+history cannot be produced with them. Because the actions are bypassed, the
+seeded history has to respect their rules by hand: every task that was worked
+on in more than one session has a resume point at the end of each earlier
+session, as FR4 requires. The days are counted back from today in the display
+time zone, so that the time report always has a full week.
+
+**Problems.** After the author set `APP_DISPLAY_TIMEZONE` in `.env`, two tests of
+the time report failed, because they assumed UTC and read the setting of the
+local environment. The tests were the defect: `phpunit.xml` now fixes the
+display time zone to UTC, so the suite no longer depends on the local `.env`.
+A first version of the seeded history broke the rule of FR4 for one completed
+task, which had two sessions without a resume point between them; it was
+corrected before the screenshots were taken, and the test for that rule was
+added so that the demo data cannot drift from it again.
+
+**Next.** The screenshots.
+
