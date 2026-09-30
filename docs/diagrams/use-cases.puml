@@ -33,7 +33,15 @@ Developer --> UC10
 UC4 .> UC11 : <<include>>
 UC5 .> UC4 : <<include>>
 UC5 .> UC3 : <<include>>
+UC5 .> UC6 : <<include>>
+UC4 .> UC8 : <<extend>>
 UC6 .> UC8 : <<extend>>
+UC7 .> UC8 : <<extend>>
 UC10 .> UC8 : <<extend>>
+
+note right of UC6
+  SwitchTask resumes the target only when
+  its status is paused, and starts it otherwise.
+end note
 
 @enduml

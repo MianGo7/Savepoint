@@ -478,3 +478,8 @@ added so that the demo data cannot drift from it again.
 
 **Next.** The screenshots.
 
+The use case diagram was revised to the implemented pages: the overview offers
+pausing and completing, so PauseTask and CompleteTask extend ViewOverview like
+ResumeTask does, and SwitchTask includes ResumeTask for a paused target, which
+the first version of the model did not show.
+
